@@ -1,0 +1,211 @@
+---
+title: "Formal Models: Shell RMD file + LaTeX Tips"
+author: Zachary Lorico Hertz
+output: pdf_document
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+urlcolor: blue
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+In this class, I'd personally prefer you spend more time focusing on the course content and less time worrying about how to typeset and format your solutions. To that end, I've cannibalized a document of former solutions to create a template for you to use. 
+
+This will assume that you have installed R and RStudio with some form of LaTeX since this is currently part of the Berkeley methods sequence. If for some reason you haven't yet done so, my go-to installation guides for [RStudio](https://posit.co/download/rstudio-desktop/) and [TinyTeX](https://bookdown.org/yihui/rmarkdown/installation.html) are linked here.
+
+# Why write up problem sets in an R Markdown document?
+
+I personally prefer this format -- rather than relying directly on LaTeX -- for a number of reasons. First, it's just much less cluttered than the usual LaTeX set-up. Second, R Markdown generally incentivizes keeping the math and the writing separate. This makes editing simpler. Finally, these sort of skills are cumulative, so there's a bit of status quo bias there where I think it's likely easier for students to stick with tools they know rather than begin new ones.
+
+# Writing: using Markdown
+
+Hopefully, at this point you are familiar with Markdown and its syntax; check out this [cheat sheet](https://www.markdownguide.org/cheat-sheet/) if you're having issues remembering how to write with it. Usually I'll use main headings (a single hash #) to separate problems, and then subsequent headings for subparts of a problem. Generally, to avoid weird compiling issues, I recommend leaving an empty line both before/after new paragraphs.
+
+# Mathing: using LaTeX
+
+We use LaTeX to typeset math. LaTeX will require you to use a backslash to indicate a command, e.g. `\frac{x}{y}`. Text when in math mode will be treated as math, though you can revert to text within math mode using the command `\text{text here}`.
+
+## Using in-line math
+
+Generally, you will have to mention variables, fractions, and things like that when introducing the problem, setting context, or explaining answers. This is where LaTeX comes in. You can use single dollar signs to enter "math mode;" anything within these dollar signs will be treated as LaTeX, then immediately go back to writing normally. So, for example, if I want to imagine some function "f of x" I would write it in-line like so: $f(X)$.
+
+## Using non-math LaTeX commands
+
+Fun fact, you can actually write LaTeX directly into your .rmd document. I will often do this for manual pagenation using the `\newpage` command. You can also add arbitrary amounts of vertical space with `\vspace` and do many other small tricks to try to make your document look nicer. For example, this will insert a page break:
+
+\newpage
+
+## Subscripts and superscripts
+
+You can add subscripts to a variable (or, actually, most objects) using the underscore key. For example, if I want to indicate that $x$ is an individual-level variable I might write it $x_i$. Here, I suggest usually writing the content of your subscript **within brackets**; this is because if you need to add multiple things within the subscript you must do so within brackets. Notice that $x_{it}$ displays correctly but $x_it$ does not.
+
+Similarly, add superscripts using the carat (shift + 6). Similarly, I suggest doing so **within brackets** to make sure everything appears on the line you intend it to. This is critical because $x^2+x$ is very different from $x^{2+x}$!
+
+## Operators
+Some key mathematical operators:
+
+- Use `\frac{numerator}{denominator}` to create a fraction; for example $\frac{6}{7}$.
+- Use `\times` or `\cdot` to indicate multiplication; for example $6 \times 7$.
+- Use `\div` to indicate division; for example $6 \div 7$.
+- Addition and multiplication are done normally with these keys; for example $6 + 7$.
+- Use `\pm` to indicate plus-or-minus; for example $6 \pm 7$.
+- Indicating equality, greater than, and less than are done normally with the usual keys; for example if $f(X) = 6$ and $f(Y) = 7$, $f(X) < f(Y)$ and $f(Y) > f(X)$.
+- Use `\leq` and `\geq` to indicate "less than or equal to" or "greater than or equal to." For example: $x \geq y$ so $y \leq x$.
+- Use `\neq` to indicate "does not equal"; for example $2+2\neq5$.
+- Use `\approx` to indicate approximation: $6.9999999 \approx 7$.
+- Absolute value is indicated normally with the vertical line key (shift + backslash): $|x+1|$.
+- Use `\to` to indicate "as x approaches" and `\infty` to indicate infinity; for example, $x \to \infty$.
+
+## Greek letters
+Generally, in LaTeX Greek letters are indicated by just using their name. One handy trick is that in many cases it is case-sensitive: so `\delta` prints a lowercase letter but `\Delta` prints the uppercase. The exceptions are for Greek letters where the uppercase resembles a Latin uppercase letter. See, for example: $\delta < \Delta$.
+
+## Writing equations
+Remember that single dollar signs indicated in-line math. You can also do math as a stand-alone equation, using double dollar signs. For example, `$$e=mc^2$$` becomes:
+
+$$e=mc^2$$
+
+## Calculations
+
+We can begin to put some of these together when performing more complex calculations.
+
+- Derivatives use the same logic as fractions: `\frac{df}{dx}` becomes $\frac{df}{dx}$. Slightly more work is needed to write partial derivatives, indicated with `\partial`: `\frac{\partial f}{\partial x}` becomes: 
+
+$$\frac{\partial f}{\partial x}$$
+
+- Integrals will take advantage of our subscript/superscript knowledge. `\int` will set an indefinite integral, such as $\int$, but you can set upper and lower bounds to the integration using a subscript and superscript with `\int_{lower bound}^{upper bound}` such as:
+$$\int_{x=0}^{x=\infty}$$
+
+- Limits use our subscripts and some of our shorthand. Use `\lim` to start a limit, then write the terms of the limit within a subscript using `\lim_{x \to y}`, such as: 
+
+$$\lim_{x\to \infty}$$
+
+- Summation brings most of our tricks together. You can indicate this with `\sum`, then similarly set the upper limit with a superscript and lower limit with a subscript for the general form `\sum_{n=1}^{\infty}a_n`. For example, this becomes:
+
+$$ \sum_{n=1}^{\infty}x_n$$ 
+
+## Logic and set theory
+
+You may also use some symbols from logic and set theory. 
+
+- The empty set is denoted with `\emptyset`: $\emptyset$.
+- Dots for continuation can be written with `\ldots`: $1, 2, 3, \ldots$
+- Brackets need leading backslashes for LaTeX to not ignore it; so we'd write the set of of positive integers as $x=\{1,2,3,\ldots\}$.
+- Indicate something is an element of a set with `\in`: so, $2 \in x$.
+- Indicate something is *not* an element of a set with `\not\in`: so, $-1 \not\in x$.
+- Indicate a conclusion with `\therefore`: $\text{I think} \therefore \text{I am}$.
+- Indicate something exists with `\exists`: $\exists e_t$.
+- Indicate something exists "for all" $m$ with `\forall`: $m=1 \forall m_t$
+
+## Equations
+
+You may, at times, wish to work through an equation line-by-line. For this, I prefer using the *align* environment in LaTeX. 
+
+You tell the code to start treating subsequent lines as part of an *align* environment using the line `\begin{align*}` and then indicate the end of this environment using `\end{align*}`. Indicate the end of a line with double backslashes: `\\`. You can use an ampersand to anchor the equation around the equals sign, and then add comments to each line to explain what you're doing using `\tag{Write the context of the tag}`. Note that while the lines themselves are treated as math, the contents of the *tag* are treated as text so you have to use dollar signs to write math inside the tag.
+
+This may be more clear with a worked-through example, so I'll write one now in a way that puts the LaTeX we've covered so far all to work. 
+
+### Example: Finding the Rate of Change
+
+In our work, we might be interested in how the *probability* of some event changes based on some parameter $k$. To illustrate writing these types of solutions, I'll suppose we have a probability function $P(x)$ that we define arbitrarily as $P(x) = 1 - G(2x + k)$, where $G$ is some cumulative distribution function with density $g = G'$. Let's find how $P$ changes with respect to $k$:
+
+\begin{align*}
+\frac{\partial P}{\partial k} &= \frac{\partial}{\partial k} [1 - G(2x + k)] \tag{definition} \\
+&= -g(2x + k) \cdot 1 \tag{by Chain Rule, $\frac{\partial}{\partial k}(2x + k) = 1$} \\
+&= -g(2x + k) \tag{simplify}
+\end{align*}
+
+Note that this puts together all of the LaTeX I've taught you so far:
+
+- `\frac{\partial P}{\partial k}` creates the necessary partial derivative notation
+- The `&` aligns all the equals signs
+- We use `\tag{}` to explain each step (like citing the Chain Rule)
+- Shows how to reference that a derivative of a constant is 1
+
+# Shell file
+
+The final part of this document is dedicated to serving as a "shell file" that you can use to write your problem set solutions. To use it, simply delete all of the previous lines and start re-writing your solutions in a similar style. 
+
+# Question 1
+
+## 1.a
+
+A legislator's utility from voting for bill S is given by $U_i(S) = B_i - |x_i - s|$, where $x_i$ is the legislator's ideal point, $s$ is the bill's position, and $B_i$ is the benefit from passing legislation. If $x_i = 3$, $s = 7$, and $B_i = 10$, calculate the legislator's utility.
+
+\begin{align*}
+U_i(S) &= B_i - |x_i - s| \tag{utility function} \\
+&= 10 - |3 - 7| \tag{substitute values} \\
+&= 10 - |-4| \tag{subtract} \\
+&= 10 - 4 \tag{absolute value} \\
+&= 6 \tag{final utility}
+\end{align*}
+
+## 1.b
+
+Now suppose the benefit term depends on a campaign contribution $C$, so $B_i(C) = 5 + 2C$. Find how utility changes with respect to contributions.
+
+\begin{align*}
+U_i(S,C) &= B_i(C) - |x_i - s| \tag{utility with contribution} \\
+&= 5 + 2C - |x_i - s| \tag{substitute $B_i(C)$} \\
+\frac{\partial U_i}{\partial C} &= \frac{\partial}{\partial C}[5 + 2C - |x_i - s|] \tag{take partial derivative} \\
+&= 2 \tag{derivative of linear term, others are constant}
+\end{align*}
+
+Therefore, each additional dollar of contributions increases utility by 2 units.
+
+## 1.c
+
+Consider two legislators: Legislator A has ideal point $x_A = 2$ and Legislator B has ideal point $x_B = 5$. The bill is at position $s = 4$. Which legislator loses more utility from the ideological distance?
+
+For Legislator A:
+\begin{align*}
+|x_A - s| &= |2 - 4| \tag{distance formula} \\
+&= |-2| \tag{subtract} \\
+&= 2 \tag{absolute value}
+\end{align*}
+
+For Legislator B:
+\begin{align*}
+|x_B - s| &= |5 - 4| \tag{distance formula} \\
+&= |1| \tag{subtract} \\
+&= 1 \tag{absolute value}
+\end{align*}
+
+Legislator A loses more utility (2 units vs 1 unit) because they are further from the bill's position. On the real problem set, you should use `\newpage` at this point to insert a new page between questions.
+
+# Question 2
+
+## 2.a
+
+A country can choose between two trade policies. Policy T gives payoff $\pi_T = 100$ with probability $p$ and payoff $\pi_T = 20$ with probability $(1-p)$. Policy N gives certain payoff $\pi_N = 50$. If the government is risk-neutral, for what values of $p$ will they prefer Policy T?
+
+Expected payoff from Policy T:
+\begin{align*}
+\mathbb{E}[\pi_T] &= p \cdot 100 + (1-p) \cdot 20 \tag{expected value} \\
+&= 100p + 20 - 20p \tag{distribute} \\
+&= 80p + 20 \tag{combine like terms}
+\end{align*}
+
+The government prefers T when:
+\begin{align*}
+\mathbb{E}[\pi_T] &> \pi_N \tag{preference condition} \\
+80p + 20 &> 50 \tag{substitute values} \\
+80p &> 30 \tag{subtract 20} \\
+p &> \frac{30}{80} \tag{divide by 80} \\
+p &> 0.375 \tag{simplify}
+\end{align*}
+
+## 2.b
+
+A voter's probability of supporting candidate M increases with media exposure $E$ according to $P(M|E) = F(aE + b)$, where $F$ is a CDF with density $f$. Find the marginal effect of media exposure.
+
+\begin{align*}
+\frac{\partial P(M|E)}{\partial E} &= \frac{\partial}{\partial E} F(aE + b) \tag{definition} \\
+&= f(aE + b) \cdot a \tag{by Chain Rule, $\frac{\partial}{\partial E}(aE + b) = a$} \\
+&= a \cdot f(aE + b) \tag{reorder}
+\end{align*}
+
+Since $f(\cdot) > 0$ and assuming $a > 0$, increased media exposure always increases the probability of supporting candidate M.
+
+\newpage
+
